@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { centeredRandom } from "../hero/scene/seededRandom";
 
 export default function NetworkLines() {
   const group = useRef();
@@ -12,15 +13,15 @@ export default function NetworkLines() {
 
     for (let i = 0; i < 20; i++) {
       const a = new THREE.Vector3(
-        (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 4
+        centeredRandom(i, 10) * 4,
+        centeredRandom(i, 11) * 4,
+        centeredRandom(i, 12) * 4
       );
 
       const b = new THREE.Vector3(
-        (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 4
+        centeredRandom(i, 13) * 4,
+        centeredRandom(i, 14) * 4,
+        centeredRandom(i, 15) * 4
       );
 
       arr.push([a, b]);

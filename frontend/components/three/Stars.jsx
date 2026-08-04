@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
+import { centeredRandom } from "../hero/scene/seededRandom";
 
 export default function Stars() {
   const starsRef = useRef();
@@ -11,9 +12,9 @@ export default function Stars() {
     const positions = new Float32Array(6000 * 3);
 
     for (let i = 0; i < 6000; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 35;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 35;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 35;
+      positions[i * 3] = centeredRandom(i, 1) * 35;
+      positions[i * 3 + 1] = centeredRandom(i, 2) * 35;
+      positions[i * 3 + 2] = centeredRandom(i, 3) * 35;
     }
 
     return positions;
