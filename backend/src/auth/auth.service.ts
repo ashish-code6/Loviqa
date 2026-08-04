@@ -1,7 +1,6 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
-// import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -98,6 +97,25 @@ export class AuthService {
       email: user.email,
       createdAt: user.createdAt,
     },
+  };
+}
+
+async getProfile(userId: string) {
+  const user = await this.prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) {
+    throw new NotFoundException('User not found');
+  }
+
+  const { password, ...userWithoutPassword } = user;
+
+  return {
+    message: 'Profile fetched successfully',
+    user: userWithoutPassword,
   };
 }
 
