@@ -4,12 +4,17 @@ import { RegisterDto } from './dto/register.dto';
 // import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly jwtService: JwtService,
+    ) { }
+
 
 
     async register(registerDto: RegisterDto) {
@@ -52,25 +57,48 @@ export class AuthService {
     // login
 
     async login(loginDto: LoginDto) {
+  // Find user by email
+  const user = await this.prisma.user.findUnique({
+    where: {
+      email: loginDto.email,
+    },
+  });
 
-        const user = await this.prisma.user.findUnique({
-            where: {
-                email: loginDto.email,
-            },
-        });
+  // Check user exists
+  if (!user) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
 
-        if (!user) {
-            throw new UnauthorizedException("Invalid email and Password!!!");
-        }
+  // Verify password
+  const isPasswordValid = await bcrypt.compare(
+    loginDto.password,
+    user.password,
+  );
 
-        const isPasswordValid = await bcrypt.compare(
-            loginDto.password,
-            user.password,
-        );
+  if (!isPasswordValid) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
 
-        if (!isPasswordValid) {
-            throw new UnauthorizedException('Invalid email or password');
-        }
-    }
+  // JWT Payload
+  const payload = {
+    sub: user.id,
+    email: user.email,
+  };
+
+  // Generate Access Token
+  const accessToken = await this.jwtService.signAsync(payload);
+
+  // Response
+  return {
+    message: 'Login successful',
+    accessToken,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+    },
+  };
+}
 
 }
