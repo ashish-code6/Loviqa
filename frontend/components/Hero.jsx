@@ -95,7 +95,7 @@ function FloatingIcon({ icon: Icon, className }) {
     <div
       className={`absolute hidden h-16 w-16 items-center justify-center rounded-full border border-fuchsia-300/28 bg-fuchsia-500/[0.16] text-fuchsia-200 shadow-[0_0_30px_rgba(217,70,239,0.4)] backdrop-blur-xl lg:flex ${className}`}
     >
-      <Icon className="h-8 w-8" />
+      <Icon className="h-5 w-5" />
     </div>
   );
 }
