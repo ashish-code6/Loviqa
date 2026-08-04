@@ -77,13 +77,9 @@ export default function Hero() {
 
           <div className="absolute h-[500px] w-[500px] rounded-full bg-violet-600/10 blur-[120px]" />
 
-          <div className="relative flex h-[500px] w-[500px] items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-3xl">
-
-            <p className="text-gray-500">
-              Three.js Scene Coming...
-            </p>
-
-          </div>
+          <div className="relative h-[550px] w-[550px] overflow-hidden rounded-full">
+  <HeroCanvas />
+</div>
 
         </div>
 
