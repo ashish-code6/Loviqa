@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiArrowRight, HiBars3, HiXMark } from "react-icons/hi2";
 import { useState } from "react";
+import AuthActionButton from "./AuthActionButton";
 import { navItems } from "./hero/data/heroContent";
 import BrandMark from "./hero/ui/BrandMark";
 
@@ -35,19 +36,19 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center justify-end gap-5 lg:flex">
-          <Link
-            href="/login"
+          <AuthActionButton
+            mode="login"
             className="rounded-lg border border-white/25 px-8 py-3 text-sm font-semibold text-white transition hover:border-white/45 hover:bg-white/[0.06]"
           >
             Login
-          </Link>
-          <Link
-            href="/register"
+          </AuthActionButton>
+          <AuthActionButton
+            mode="register"
             className="inline-flex items-center gap-4 rounded-lg bg-gradient-to-r from-violet-600 via-fuchsia-500 to-orange-300 px-8 py-3 text-sm font-bold text-white shadow-[0_18px_42px_rgba(168,85,247,0.36)] transition hover:-translate-y-0.5"
           >
             Get Started
             <HiArrowRight className="h-5 w-5" />
-          </Link>
+          </AuthActionButton>
         </div>
 
         <button
@@ -77,18 +78,20 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
-            <Link
-              href="/login"
+            <AuthActionButton
+              mode="login"
+              onOpen={() => setOpen(false)}
               className="mt-2 rounded-2xl border border-white/15 py-3 text-center text-sm font-semibold text-white"
             >
               Login
-            </Link>
-            <Link
-              href="/register"
+            </AuthActionButton>
+            <AuthActionButton
+              mode="register"
+              onOpen={() => setOpen(false)}
               className="rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-orange-300 py-3 text-center text-sm font-bold text-white"
             >
               Get Started
-            </Link>
+            </AuthActionButton>
           </div>
         </motion.div>
       )}

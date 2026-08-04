@@ -1,10 +1,4 @@
 import "./globals.css";
-import { Geist } from "next/font/google";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-});
 
 export const metadata = {
   title: {
@@ -32,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geist.variable} scroll-smooth`}
+      className="scroll-smooth"
       suppressHydrationWarning
     >
       <body

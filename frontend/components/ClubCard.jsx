@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Users } from "lucide-react";
+import AuthActionButton from "./AuthActionButton";
 
 export default function ClubCard({
   title,
@@ -80,7 +81,9 @@ export default function ClubCard({
 
           </div>
 
-          <button
+          <AuthActionButton
+            mode="register"
+            aria-label={`Open ${title} club`}
             className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:rotate-45"
             style={{
               background: `${color}20`,
@@ -90,7 +93,7 @@ export default function ClubCard({
               size={18}
               color={color}
             />
-          </button>
+          </AuthActionButton>
 
         </div>
 

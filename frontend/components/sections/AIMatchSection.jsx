@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import AuthActionButton from "../AuthActionButton";
 import PhoneMockup from "./ui/PhoneMockup";
 
 export default function AIMatchSection() {
@@ -109,11 +110,14 @@ export default function AIMatchSection() {
 
           {/* BUTTON */}
 
-          <button className="mt-10 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-7 py-3 text-sm font-semibold transition duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(139,92,246,.45)]">
+          <AuthActionButton
+            mode="register"
+            className="mt-10 inline-flex rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-7 py-3 text-sm font-semibold transition duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(139,92,246,.45)]"
+          >
 
             Explore AI Matching
 
-          </button>
+          </AuthActionButton>
 
         </motion.div>
 

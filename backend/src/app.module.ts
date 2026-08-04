@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthMiddleware } from './auth/middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -17,4 +18,11 @@ import { PrismaModule } from './prisma/prisma.module';
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(
+      { path: 'auth/profile', method: RequestMethod.GET },
+      { path: 'users', method: RequestMethod.ALL },
+    );
+  }
+}

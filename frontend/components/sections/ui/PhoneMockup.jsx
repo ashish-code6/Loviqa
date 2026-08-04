@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import AuthActionButton from "@/components/AuthActionButton";
 import {
   Heart,
   Sparkles,
@@ -90,13 +91,16 @@ export default function PhoneMockup() {
 
           {/* Bottom Button */}
 
-          <button className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-600 py-4 font-semibold">
+          <AuthActionButton
+            mode="register"
+            className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-600 py-4 font-semibold"
+          >
 
             <Heart size={18} />
 
             Start Matching
 
-          </button>
+          </AuthActionButton>
 
         </div>
 

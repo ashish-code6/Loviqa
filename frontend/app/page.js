@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import AuthModalHost from "@/components/AuthModalHost";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
@@ -11,6 +13,9 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#070B14]">
       <Navbar />
+      <Suspense fallback={null}>
+        <AuthModalHost />
+      </Suspense>
       <Hero/>
       <StatsSection/>
       <AIMatchSection/>
