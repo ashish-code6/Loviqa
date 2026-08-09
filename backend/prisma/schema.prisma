@@ -21,4 +21,22 @@ model User {
   isActive       Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  profile   UserProfile?
+
+}
+
+// Defines a one-to-one relationship between UserProfile and User.
+// fields: [userId] means UserProfile.userId is used as the foreign key,
+// references: [id] means it references the id field of the User model,
+// and onDelete: Cascade means when a User is deleted, the related
+// UserProfile is automatically deleted as well.
+model UserProfile{
+
+  id  String  @id @default(uuid())
+  userId String @unique  //foregion key
+  age   Int?
+  gender String?
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  
+
 }
