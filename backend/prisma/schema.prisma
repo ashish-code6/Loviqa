@@ -36,7 +36,9 @@ model UserProfile{
   userId String @unique  //foregion key
   age   Int?
   gender String?
+  bio    String?
   user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+
   
 
 }
