@@ -16,6 +16,8 @@ export class UsersService {
                 userId,
                 age: createProfileDto.age,
                 gender: createProfileDto.gender,
+                bio:    createProfileDto.bio,
+                location: createProfileDto.location,
             },
         });
 
