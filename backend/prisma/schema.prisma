@@ -1,45 +1,79 @@
-
 generator client {
-  provider              = "prisma-client"
-  output                = "../generated/prisma"
-  moduleFormat          = "cjs"
+  provider               = "prisma-client"
+  output                 = "../generated/prisma"
+  moduleFormat            = "cjs"
   generatedFileExtension = "cts"
-  importFileExtension   = "cjs"
+  importFileExtension    = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  emailVerified Boolean @default(false)
-  isActive       Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profile   UserProfile?
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  emailVerified Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
+  profile       UserProfile?
+  interests     UserInterest[]
 }
 
+
 // Defines a one-to-one relationship between UserProfile and User.
-// fields: [userId] means UserProfile.userId is used as the foreign key,
-// references: [id] means it references the id field of the User model,
-// and onDelete: Cascade means when a User is deleted, the related
-// UserProfile is automatically deleted as well.
-model UserProfile{
+// fields: [userId] means UserProfile.userId is used as the foreign key.
+// references: [id] means it references the id field of User.
+// onDelete: Cascade means when a User is deleted,
+// the related UserProfile is automatically deleted.
+model UserProfile {
+  id       String  @id @default(uuid())
+  userId   String  @unique
 
-  id  String  @id @default(uuid())
-  userId String @unique  //foregion key
-  age   Int?
-  gender String?
-  bio    String?
+  age      Int?
+  gender   String?
+  bio      String?
   location String?
-  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
 
-  
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+}
 
+
+// Predefined/master interests.
+// Example: Music, Painting, Gaming, Cricket, Travel.
+model Interest {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  createdAt DateTime       @default(now())
+
+  userInterests UserInterest[]
+}
+
+
+// Connects User and Interest.
+// This is a junction/bridge table for the many-to-many relationship.
+//
+// Example:
+// User A → Music
+// User A → Painting
+// User B → Music
+model UserInterest {
+  id         String @id @default(uuid())
+  userId     String
+  interestId String
+
+  // Used when the user selects "Other".
+  // Example: Astrology, Stock Market, Cars, etc.
+  customInterest String?
+
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+  interest Interest @relation(fields: [interestId],references: [id],onDelete: Cascade)
+
+  // Same user cannot select the same predefined interest twice.
+  @@unique([userId, interestId])
 }
