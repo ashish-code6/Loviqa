@@ -61,6 +61,7 @@ export class AuthService {
     where: {
       email: loginDto.email,
     },
+    include: { profile: true },
   });
 
   // Check user exists
@@ -97,6 +98,7 @@ export class AuthService {
       email: user.email,
       createdAt: user.createdAt,
     },
+    onboardingComplete: Boolean(user.profile),
   };
 }
 
@@ -104,6 +106,10 @@ async getProfile(userId: string) {
   const user = await this.prisma.user.findUnique({
     where: {
       id: userId,
+    },
+    include: {
+      profile: true,
+      interests: { include: { interest: true } },
     },
   });
 
@@ -116,6 +122,7 @@ async getProfile(userId: string) {
   return {
     message: 'Profile fetched successfully',
     user: userWithoutPassword,
+    onboardingComplete: Boolean(user.profile),
   };
 }
 

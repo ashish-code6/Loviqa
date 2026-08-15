@@ -10,6 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from './users.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 
 type AuthenticatedRequest = Request & {
     user: {
@@ -35,4 +36,14 @@ export class UsersController {
             createProfileDto,
         );
     }
+
+    @Post('onboarding')
+    @UseGuards(AuthGuard('jwt'))
+    completeOnboarding(
+        @Req() req: AuthenticatedRequest,
+        @Body() onboardingDto: CompleteOnboardingDto,
+    ) {
+        return this.userservice.completeOnboarding(req.user.id, onboardingDto);
+    }
+
 }

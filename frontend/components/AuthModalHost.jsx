@@ -66,7 +66,7 @@ export default function AuthModalHost() {
           body: JSON.stringify(forms.login),
         });
         saveSession(data);
-        router.push("/dashboard");
+        router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
         return;
       }
 
@@ -83,7 +83,7 @@ export default function AuthModalHost() {
         }),
       });
       saveSession(data);
-      router.push("/dashboard");
+      router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
     } catch (error) {
       setMessage({ type: "error", text: error.message });
     } finally {

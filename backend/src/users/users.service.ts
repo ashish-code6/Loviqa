@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { CreateInterestDto } from './dto/create-interest.dto';
+import { CompleteOnboardingDto } from './dto/complete-onboarding.dto';
 
 
 @Injectable()
@@ -12,8 +12,15 @@ export class UsersService {
         userId: string,
         createProfileDto: CreateProfileDto,
     ) {
-        const profile = await this.prisma.userProfile.create({
-            data: {
+        const profile = await this.prisma.userProfile.upsert({
+            where: { userId },
+            update: {
+                age: createProfileDto.age,
+                gender: createProfileDto.gender,
+                bio: createProfileDto.bio,
+                location: createProfileDto.location,
+            },
+            create: {
                 userId,
                 age: createProfileDto.age,
                 gender: createProfileDto.gender,
@@ -28,18 +35,48 @@ export class UsersService {
         };
     }
 
-//     async createInterest(createInterestDto: CreateInterestDto) {
-//   const interest = await this.prisma.interest.create({
-//     data: {
-//       name: createInterestDto.name,
-//     },
-//   });
+    async completeOnboarding(userId: string, onboardingDto: CompleteOnboardingDto) {
+        const interests = await this.prisma.interest.findMany({
+            where: { id: { in: onboardingDto.interestIds } },
+            select: { id: true },
+        });
 
-//   return {
-//     message: 'Interest created successfully',
-//     interest,
-//   };
-// }
+        if (interests.length !== onboardingDto.interestIds.length) {
+            throw new BadRequestException('One or more selected interests are no longer available');
+        }
+
+        const profile = await this.prisma.$transaction(async (tx) => {
+            const savedProfile = await tx.userProfile.upsert({
+                where: { userId },
+                update: {
+                    age: onboardingDto.age,
+                    gender: onboardingDto.gender,
+                    location: onboardingDto.location,
+                    bio: onboardingDto.bio,
+                },
+                create: {
+                    userId,
+                    age: onboardingDto.age,
+                    gender: onboardingDto.gender,
+                    location: onboardingDto.location,
+                    bio: onboardingDto.bio,
+                },
+            });
+
+            await tx.userInterest.deleteMany({ where: { userId } });
+            await tx.userInterest.createMany({
+                data: onboardingDto.interestIds.map((interestId) => ({ userId, interestId })),
+            });
+
+            return savedProfile;
+        });
+
+        return {
+            message: 'Onboarding completed successfully',
+            profile,
+            onboardingComplete: true,
+        };
+    }
 
 }
 

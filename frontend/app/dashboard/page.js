@@ -191,7 +191,7 @@ export default function DashboardPage() {
                 </GlassCard>
               </div>
 
-              <GlassCard>
+              <GlassCard id="profile">
                 <div className="flex items-center gap-3">
                   <HiSparkles className="h-6 w-6 text-orange-200" />
                   <h2 className="text-xl font-black">Daily AI Suggestions</h2>
@@ -277,6 +277,21 @@ export default function DashboardPage() {
                     <span className="font-bold text-white">Email:</span>{" "}
                     {user?.email || "ashish@example.com"}
                   </p>
+                  {user?.profile?.location && (
+                    <p>
+                      <span className="font-bold text-white">Location:</span>{" "}
+                      {user.profile.location}
+                    </p>
+                  )}
+                  {user?.interests?.length > 0 && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {user.interests.map(({ interest }) => (
+                        <span key={interest.id} className="rounded-full bg-fuchsia-500/10 px-2.5 py-1 text-xs font-semibold text-fuchsia-100">
+                          {interest.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </GlassCard>
             </div>
@@ -287,9 +302,9 @@ export default function DashboardPage() {
   );
 }
 
-function GlassCard({ children }) {
+function GlassCard({ children, ...props }) {
   return (
-    <section className="rounded-[20px] border border-white/10 bg-white/[0.055] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
+    <section {...props} className="rounded-[20px] border border-white/10 bg-white/[0.055] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
       {children}
     </section>
   );
