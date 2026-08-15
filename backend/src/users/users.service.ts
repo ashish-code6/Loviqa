@@ -28,18 +28,18 @@ export class UsersService {
         };
     }
 
-    async createInterest(createInterestDto: CreateInterestDto) {
-  const interest = await this.prisma.interest.create({
-    data: {
-      name: createInterestDto.name,
-    },
-  });
+//     async createInterest(createInterestDto: CreateInterestDto) {
+//   const interest = await this.prisma.interest.create({
+//     data: {
+//       name: createInterestDto.name,
+//     },
+//   });
 
-  return {
-    message: 'Interest created successfully',
-    interest,
-  };
-}
+//   return {
+//     message: 'Interest created successfully',
+//     interest,
+//   };
+// }
 
 }
 

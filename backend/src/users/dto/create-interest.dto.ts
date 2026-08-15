@@ -1,7 +1,14 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
-export class CreateInterestDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+export class CreateInterestDto{
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  interestIds: string[];
+
+  customInterest?: string;
 }

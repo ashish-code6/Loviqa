@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
+import { InterestsModule } from './interests/interests.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthMiddleware } from './auth/middleware/auth.middleware';
     PrismaModule,
     AuthModule,
     UsersModule,
+    InterestsModule,
   ],
   controllers: [AppController],
 })
