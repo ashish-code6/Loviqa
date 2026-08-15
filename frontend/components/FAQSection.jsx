@@ -41,7 +41,7 @@ export default function FAQSection() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className="relative overflow-hidden bg-[#070B14] py-24">
+    <section id="faq" className="relative overflow-hidden bg-[#090611] py-20 lg:py-24">
 
       {/* Background Glow */}
 
@@ -59,11 +59,11 @@ export default function FAQSection() {
 
           </span>
 
-          <h2 className="mt-6 text-4xl font-bold text-white md:text-5xl">
+          <h2 className="mt-5 text-3xl font-bold text-white md:text-4xl">
 
             Frequently Asked
 
-            <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-violet-300 via-fuchsia-400 to-rose-300 bg-clip-text text-transparent">
 
               Questions
 
@@ -71,7 +71,7 @@ export default function FAQSection() {
 
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-gray-400">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-400">
 
             Everything you need to know about AI matching,
             clubs, privacy and how Loviqa works.
@@ -82,7 +82,7 @@ export default function FAQSection() {
 
         {/* FAQ */}
 
-        <div className="mt-14 space-y-5">
+        <div className="mt-9 space-y-3">
 
           {faqs.map((faq, index) => {
 
@@ -93,17 +93,17 @@ export default function FAQSection() {
               <motion.div
                 key={index}
                 layout
-                className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl"
+                className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-white/[0.07] to-white/[0.025] backdrop-blur-xl transition-colors hover:border-fuchsia-400/30"
               >
 
                 <button
                   onClick={() =>
                     setOpen(isOpen ? -1 : index)
                   }
-                  className="flex w-full items-center justify-between px-7 py-6 text-left"
+                  className="flex w-full items-center justify-between px-6 py-5 text-left"
                 >
 
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-base font-semibold text-white">
 
                     {faq.question}
 
@@ -146,7 +146,7 @@ export default function FAQSection() {
                       }}
                     >
 
-                      <p className="px-7 pb-6 text-[15px] leading-7 text-gray-400">
+                      <p className="px-6 pb-5 text-sm leading-6 text-gray-400">
 
                         {faq.answer}
 

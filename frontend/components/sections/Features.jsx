@@ -45,9 +45,12 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="relative py-32">
+    <section id="features" className="relative overflow-hidden bg-[#0d0718] py-20 lg:py-24">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-400/40 to-transparent" />
+      <div className="absolute -left-32 top-1/3 h-80 w-80 rounded-full bg-violet-600/15 blur-[140px]" />
+      <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-rose-500/10 blur-[140px]" />
 
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-7xl px-6">
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -56,13 +59,9 @@ export default function Features() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-5 py-2 text-violet-300">
-            Why Loviqa?
+          <span className="rounded-full border border-fuchsia-400/25 bg-fuchsia-400/10 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-fuchsia-200">
+            Made for more
           </span>
-
-          <h2 className="mt-8 text-5xl font-bold">
-            Connect Beyond Swiping
-          </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
             Loviqa combines AI, communities and meaningful conversations
@@ -70,7 +69,7 @@ export default function Features() {
           </p>
         </motion.div>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
 
           {features.map((item, index) => {
 
@@ -85,28 +84,28 @@ export default function Features() {
                   scale: 1.03,
                 }}
                 transition={{ duration: .3 }}
-                className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+                className="group rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.09] to-white/[0.025] p-6 backdrop-blur-xl transition-colors hover:border-fuchsia-400/40 hover:shadow-[0_18px_48px_rgba(192,38,211,.15)]"
               >
 
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 shadow-[0_0_35px_rgba(139,92,246,.4)]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500 shadow-[0_0_35px_rgba(192,38,211,.35)]">
 
                   <Icon size={30} />
 
                 </div>
 
-                <h3 className="mt-8 text-2xl font-semibold">
+                <h3 className="mt-5 text-xl font-semibold">
 
                   {item.title}
 
                 </h3>
 
-                <p className="mt-4 leading-8 text-gray-400">
+                <p className="mt-3 text-sm leading-6 text-gray-400">
 
                   {item.desc}
 
                 </p>
 
-                <div className="mt-8 h-[2px] w-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all duration-500 group-hover:w-full" />
+                <div className="mt-6 h-px w-0 bg-gradient-to-r from-violet-400 to-rose-400 transition-all duration-500 group-hover:w-full" />
 
               </motion.div>
 

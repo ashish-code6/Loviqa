@@ -22,7 +22,7 @@ const fadeUp = {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#03020a] px-5 pb-6 pt-24 text-white lg:px-11 lg:pt-20">
+    <section className="relative min-h-[92vh] overflow-hidden bg-[#03020a] px-5 pb-6 pt-22 text-white lg:px-11 lg:pt-18">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_67%_38%,rgba(126,34,206,0.34),transparent_30%),radial-gradient(circle_at_45%_45%,rgba(217,70,239,0.12),transparent_34%),radial-gradient(circle_at_14%_42%,rgba(88,28,135,0.18),transparent_38%),linear-gradient(90deg,#020109_0%,#05020d_42%,#070214_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,transparent_0%,rgba(3,2,10,0.08)_34%,rgba(3,2,10,0.5)_100%)]" />
       <div className="absolute inset-x-[-10%] bottom-24 h-28 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.32),transparent_64%)] blur-2xl" />
@@ -30,7 +30,7 @@ export default function Hero() {
       <div className="absolute bottom-0 left-0 right-0 h-56 opacity-60 [background-image:radial-gradient(circle,rgba(217,70,239,0.82)_1px,transparent_1.4px)] [background-size:17px_17px] [mask-image:linear-gradient(to_top,black,transparent)]" />
 
       <div className="relative mx-auto max-w-[1500px]">
-        <div className="grid min-h-[calc(100vh-6.5rem)] items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="grid min-h-[calc(92vh-6rem)] items-center gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -40,23 +40,23 @@ export default function Hero() {
           >
             <HeroBadge />
 
-            <h1 className="mt-6 text-5xl font-black leading-[1.1] tracking-normal text-white sm:text-6xl xl:text-[66px]">
+            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-normal text-white sm:text-5xl xl:text-[60px]">
               Find Meaningful Connections,
               <span className="block bg-gradient-to-r from-white via-fuchsia-200 to-fuchsia-500 bg-clip-text text-transparent">
                 Powered by AI
               </span>
             </h1>
 
-            <p className="mt-6 max-w-[520px] text-lg leading-8 text-white/68">
+            <p className="mt-5 max-w-[520px] text-base leading-7 text-white/68">
               Loviqa helps you meet compatible people through shared interests,
               smart matchmaking, and meaningful conversations.
             </p>
 
-            <div className="mt-8">
+            <div className="mt-7">
               <HeroActions />
             </div>
 
-            <div className="mt-12">
+            <div className="mt-9">
               <HeroStats />
             </div>
           </motion.div>

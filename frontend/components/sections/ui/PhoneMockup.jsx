@@ -21,10 +21,10 @@ export default function PhoneMockup() {
       className="relative mx-auto h-[520px] w-[260px] lg:h-[540px] lg:w-[270px]"
     >
       {/* Glow */}
-      <div className="absolute inset-0 rounded-[50px] bg-violet-600/20 blur-3xl" />
+      <div className="absolute inset-0 rounded-[50px] bg-fuchsia-600/25 blur-3xl" />
 
       {/* Phone */}
-      <div className="relative h-full rounded-[45px] border border-white/10 bg-[#0B1220]/90 p-4 backdrop-blur-2xl">
+      <div className="relative h-full rounded-[45px] border border-fuchsia-200/15 bg-[#120a20]/90 p-4 shadow-[0_25px_80px_rgba(0,0,0,.45)] backdrop-blur-2xl">
 
         {/* Dynamic Island */}
         <div className="mx-auto h-6 w-32 rounded-full bg-black" />
@@ -93,7 +93,7 @@ export default function PhoneMockup() {
 
           <AuthActionButton
             mode="register"
-            className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-600 py-4 font-semibold"
+            className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-500 py-4 font-semibold"
           >
 
             <Heart size={18} />

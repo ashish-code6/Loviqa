@@ -23,7 +23,7 @@ export default function ClubCard({
         y: -8,
         scale: 1.02,
       }}
-      className="group relative flex min-h-[230px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-5 backdrop-blur-xl transition-all duration-500 hover:border-violet-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,.18)]"
+      className="group relative flex min-h-[250px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.09] to-white/[0.025] p-6 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_20px_60px_rgba(192,38,211,.18)]"
     >
       {/* Glow */}
       <div
@@ -36,7 +36,7 @@ export default function ClubCard({
 
         {/* Badge */}
         <span
-          className="inline-flex w-fit rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-white"
+          className="inline-flex w-fit rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white"
           style={{
             background: `${color}25`,
             border: `1px solid ${color}`,

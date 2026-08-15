@@ -11,14 +11,14 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#070B14]">
+    <footer className="relative overflow-hidden border-t border-fuchsia-300/10 bg-[#0d0718]">
 
       {/* Glow */}
       <div className="absolute left-1/2 top-0 h-[350px] w-[350px] -translate-x-1/2 rounded-full bg-violet-600/10 blur-[160px]" />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-16">
+      <div className="relative mx-auto max-w-7xl px-6 py-12">
 
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
 
           {/* Logo */}
           <div className="lg:col-span-2">
@@ -35,7 +35,7 @@ export default function Footer() {
 
             {/* Social Icons */}
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-6 flex gap-4">
 
               <a
                 href="#"
@@ -144,7 +144,7 @@ export default function Footer() {
 
         {/* Divider */}
 
-        <div className="my-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         {/* Bottom */}
 

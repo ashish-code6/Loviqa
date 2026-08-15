@@ -33,7 +33,7 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#070B14] via-[#0A1020] to-[#070B14] py-24">
+    <section id="highlights" className="relative overflow-hidden bg-[#090611] py-20 lg:py-24">
 
       {/* Background Grid */}
 
@@ -50,11 +50,11 @@ export default function StatsSection() {
 
       {/* Glows */}
 
-      <div className="absolute left-1/2 top-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-600/10 blur-[180px]" />
+      <div className="absolute left-1/2 top-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-fuchsia-600/15 blur-[180px]" />
 
       <div className="absolute -left-40 top-40 h-[350px] w-[350px] rounded-full bg-fuchsia-500/10 blur-[170px]" />
 
-      <div className="absolute -right-32 bottom-10 h-[320px] w-[320px] rounded-full bg-cyan-500/10 blur-[170px]" />
+      <div className="absolute -right-32 bottom-10 h-[320px] w-[320px] rounded-full bg-rose-500/10 blur-[170px]" />
 
       <div className="relative mx-auto max-w-7xl px-6">
 
@@ -74,11 +74,11 @@ export default function StatsSection() {
 
           </span>
 
-          <h2 className="mt-6 text-3xl font-bold tracking-tight md:text-5xl">
+          <h2 className="mt-5 text-3xl font-bold tracking-tight md:text-4xl">
 
             Built for{" "}
 
-            <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-300 via-fuchsia-400 to-rose-300 bg-clip-text text-transparent">
 
               Real Connections
 
@@ -86,7 +86,7 @@ export default function StatsSection() {
 
           </h2>
 
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-gray-400 md:text-base">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-gray-400 md:text-base">
 
             AI-powered matching, interest clubs, secure conversations
             and meaningful social experiences designed for genuine
@@ -98,7 +98,7 @@ export default function StatsSection() {
 
         {/* Cards */}
 
-        <div className="mt-16 grid grid-cols-2 gap-5 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
 
           {stats.map((item, index) => {
 
@@ -119,16 +119,16 @@ export default function StatsSection() {
                   y: -8,
                   scale: 1.03,
                 }}
-                className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition-all duration-300 hover:border-violet-500/40 hover:bg-white/[0.05] hover:shadow-[0_0_40px_rgba(124,58,237,.15)]"
+                className="group rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.09] to-white/[0.025] p-5 backdrop-blur-xl transition-all duration-300 hover:border-fuchsia-400/45 hover:shadow-[0_18px_48px_rgba(192,38,211,.18)]"
               >
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 text-violet-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/30 to-rose-500/20 text-fuchsia-200">
 
                   <Icon size={22} />
 
                 </div>
 
-                <h3 className="mt-5 text-3xl font-bold text-white">
+                <h3 className="mt-4 text-2xl font-bold text-white">
 
                   {item.value}
 

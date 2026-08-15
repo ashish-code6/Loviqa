@@ -6,12 +6,14 @@ import PhoneMockup from "./ui/PhoneMockup";
 
 export default function AIMatchSection() {
   return (
-    <section className="relative overflow-hidden bg-[#070B14] py-20 lg:py-22">
+    <section id="ai-matching" className="relative isolate overflow-hidden bg-[#090611] py-20 lg:py-24">
 
-      {/* Background Glow */}
-      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-[180px]" />
+      {/* A fixed-looking visual layer keeps the section grounded while its content scrolls. */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_48%,rgba(168,85,247,0.18),transparent_27%),radial-gradient(circle_at_82%_65%,rgba(236,72,153,0.12),transparent_30%)]" />
+      <div className="pointer-events-none absolute left-1/4 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-fuchsia-600/16 blur-[180px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-fuchsia-300/35 to-transparent" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col-reverse items-center gap-16 px-6 lg:flex-row lg:gap-24">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2 lg:gap-16">
 
         {/* LEFT IMAGE */}
 
@@ -20,7 +22,7 @@ export default function AIMatchSection() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: .8 }}
           viewport={{ once: true }}
-          className="flex w-full justify-center lg:flex-1"
+          className="flex w-full justify-center lg:sticky lg:top-28 lg:self-start"
         >
           <PhoneMockup />
         </motion.div>
@@ -32,7 +34,7 @@ export default function AIMatchSection() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: .8 }}
           viewport={{ once: true }}
-          className="w-full lg:flex-1 text-center lg:text-left"
+          className="w-full py-2 text-center lg:py-8 lg:text-left"
         >
 
           <span className="inline-flex rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-xs font-medium uppercase tracking-widest text-violet-300">
@@ -41,23 +43,23 @@ export default function AIMatchSection() {
 
           </span>
 
-          <h2 className="mt-6 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl lg:text-[42px]">
 
-            Find People
+            Meet People
 
             <br />
 
-            Who Truly
+            Who Really
 
-            <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-violet-300 via-fuchsia-400 to-rose-300 bg-clip-text text-transparent">
 
-              Match You
+              Get You
 
             </span>
 
           </h2>
 
-          <p className="mx-auto mt-6 max-w-lg text-sm leading-7 text-gray-400 sm:text-base lg:mx-0">
+          <p className="mx-auto mt-5 max-w-lg text-sm leading-6 text-gray-400 sm:text-base lg:mx-0">
 
             Loviqa intelligently matches you with people based
             on your interests, personality and activities,
@@ -68,7 +70,7 @@ export default function AIMatchSection() {
 
           {/* FEATURES */}
 
-          <div className="mt-10 space-y-5">
+          <div className="mt-7 space-y-3">
 
             <div className="flex items-center justify-center gap-3 lg:justify-start">
 
@@ -96,7 +98,7 @@ export default function AIMatchSection() {
 
             <div className="flex items-center justify-center gap-3 lg:justify-start">
 
-              <div className="h-2.5 w-2.5 rounded-full bg-cyan-400" />
+                <div className="h-2.5 w-2.5 rounded-full bg-rose-400" />
 
               <p className="text-sm text-gray-300">
 
@@ -112,7 +114,7 @@ export default function AIMatchSection() {
 
           <AuthActionButton
             mode="register"
-            className="mt-10 inline-flex rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-7 py-3 text-sm font-semibold transition duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(139,92,246,.45)]"
+            className="mt-7 inline-flex rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-500 to-rose-400 px-6 py-3 text-sm font-semibold transition duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(192,38,211,.45)]"
           >
 
             Explore AI Matching
