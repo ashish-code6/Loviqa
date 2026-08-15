@@ -12,6 +12,8 @@ import {
 } from "react-icons/hi2";
 import BrandMark from "@/components/hero/ui/BrandMark";
 import { apiRequest, clearSession, getStoredUser } from "@/lib/api";
+import { toast } from "react-toastify";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const steps = ["About you", "Your interests", "A little more"];
 
@@ -41,6 +43,7 @@ export default function OnboardingPage() {
         setInterests(interestData);
       })
       .catch((requestError) => {
+        toast.error(requestError.message);
         clearSession();
         router.replace("/?auth=login");
         setError(requestError.message);
@@ -87,16 +90,18 @@ export default function OnboardingPage() {
           interestIds: selected,
         }),
       });
+      toast.success("Your profile is ready!");
       router.replace("/dashboard#profile");
     } catch (requestError) {
       setError(requestError.message);
+      toast.error(requestError.message);
     } finally {
       setSaving(false);
     }
   }
 
   if (loading) {
-    return <main className="grid min-h-screen place-items-center bg-[#090611] text-sm font-semibold text-white/70">Preparing your profile…</main>;
+    return <main className="grid min-h-screen place-items-center bg-[#090611] text-sm font-semibold text-white/70"><span className="inline-flex items-center gap-3"><LoadingSpinner className="h-6 w-6 border-fuchsia-200/30 border-t-fuchsia-200" />Preparing your profile…</span></main>;
   }
 
   return (
@@ -132,7 +137,7 @@ export default function OnboardingPage() {
             <div className="mt-7 flex items-center justify-between gap-3 sm:mt-8 sm:gap-4">
               {step > 0 ? <button onClick={() => setStep((current) => current - 1)} className="inline-flex items-center gap-2 text-sm font-bold text-white/65 transition hover:text-white"><HiArrowLeft /> Back</button> : <span />}
               <button onClick={step === steps.length - 1 ? finish : nextStep} disabled={saving} className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-rose-400 px-4 text-sm font-bold shadow-[0_12px_30px_rgba(192,38,211,.3)] transition hover:-translate-y-0.5 disabled:opacity-60 sm:px-5">
-                {saving ? "Saving…" : step === steps.length - 1 ? "Complete profile" : "Continue"} <HiArrowRight />
+                {saving ? <><LoadingSpinner /> Saving…</> : <>{step === steps.length - 1 ? "Complete profile" : "Continue"} <HiArrowRight /></>}
               </button>
             </div>
           </div>

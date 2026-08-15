@@ -1,4 +1,5 @@
 import "./globals.css";
+import ToastProvider from "@/components/ui/ToastProvider";
 
 export const metadata = {
   title: {
@@ -39,6 +40,7 @@ export default function RootLayout({ children }) {
         "
       >
         {children}
+        <ToastProvider />
       </body>
     </html>
   );

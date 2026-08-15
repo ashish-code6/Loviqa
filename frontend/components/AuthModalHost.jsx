@@ -9,6 +9,8 @@ import {
   HiXMark,
 } from "react-icons/hi2";
 import { apiRequest, saveSession } from "@/lib/api";
+import { toast } from "react-toastify";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const emptyForms = {
   login: { email: "", password: "" },
@@ -66,6 +68,7 @@ export default function AuthModalHost() {
           body: JSON.stringify(forms.login),
         });
         saveSession(data);
+        toast.success("Welcome back to Loviqa!");
         router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
         return;
       }
@@ -83,9 +86,11 @@ export default function AuthModalHost() {
         }),
       });
       saveSession(data);
+      toast.success("Account created. Let's personalise your profile.");
       router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
     } catch (error) {
       setMessage({ type: "error", text: error.message });
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -181,10 +186,19 @@ export default function AuthModalHost() {
             disabled={loading}
             className="mt-2 inline-flex h-12 items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-violet-600 via-fuchsia-500 to-orange-300 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-65"
           >
-            {loading ? "Please wait..." : isLogin ? "Login" : "Register"}
-            <HiArrowRight className="h-5 w-5" />
+            {loading ? <><LoadingSpinner /> Please wait…</> : <>{isLogin ? "Login" : "Register"}<HiArrowRight className="h-5 w-5" /></>}
           </button>
         </form>
+
+        {isLogin && (
+          <button
+            type="button"
+            onClick={() => router.push("/forgot-password")}
+            className="mt-4 text-sm font-semibold text-fuchsia-200 transition hover:text-white"
+          >
+            Forgot your password?
+          </button>
+        )}
 
         <button
           type="button"

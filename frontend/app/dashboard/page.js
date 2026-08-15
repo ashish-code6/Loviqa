@@ -19,6 +19,8 @@ import {
 } from "react-icons/hi2";
 import BrandMark from "@/components/hero/ui/BrandMark";
 import { apiRequest, clearSession, getStoredUser } from "@/lib/api";
+import { toast } from "react-toastify";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const navItems = [
   { label: "Dashboard", icon: HiOutlineHome, active: true },
@@ -64,6 +66,7 @@ export default function DashboardPage() {
     apiRequest("/auth/profile")
       .then((data) => setUser(data.user))
       .catch(() => {
+        toast.error("Your session has expired. Please log in again.");
         clearSession();
         router.replace("/?auth=login");
       })
@@ -71,6 +74,7 @@ export default function DashboardPage() {
   }, [router]);
 
   function handleLogout() {
+    toast.success("You have been logged out.");
     clearSession();
     router.replace("/?auth=login");
   }
@@ -78,7 +82,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#050712] text-white">
-        <p className="text-sm font-semibold text-white/70">Opening dashboard...</p>
+        <p className="inline-flex items-center gap-3 text-sm font-semibold text-white/70"><LoadingSpinner className="border-fuchsia-200/30 border-t-fuchsia-200" />Opening dashboard...</p>
       </main>
     );
   }
