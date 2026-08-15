@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { InterestsModule } from './interests/interests.module';
+import { MatchModule } from './match/match.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { InterestsModule } from './interests/interests.module';
     AuthModule,
     UsersModule,
     InterestsModule,
+    MatchModule,
+    AiModule,
   ],
   controllers: [AppController],
 })
