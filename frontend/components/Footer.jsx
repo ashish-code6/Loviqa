@@ -1,11 +1,6 @@
 "use client";
 
 import Link from "next/link";
-// import {
-//   Instagram,
-//   Linkedin,
-//   Facebook,
-// } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -32,33 +27,6 @@ export default function Footer() {
               matchmaking, interest clubs and authentic
               conversations.
             </p>
-
-            {/* Social Icons */}
-
-            <div className="mt-6 flex gap-4">
-
-              <a
-                href="#"
-                className="rounded-xl border border-white/10 p-3 text-gray-400 transition hover:border-pink-500 hover:text-white"
-              >
-                {/* <Instagram size={18} /> */}
-              </a>
-
-              <a
-                href="#"
-                className="rounded-xl border border-white/10 p-3 text-gray-400 transition hover:border-cyan-500 hover:text-white"
-              >
-                {/* <Linkedin size={18} /> */}
-              </a>
-
-              <a
-                href="#"
-                className="rounded-xl border border-white/10 p-3 text-gray-400 transition hover:border-blue-500 hover:text-white"
-              >
-                {/* <Facebook size={18} /> */}
-              </a>
-
-            </div>
 
           </div>
 

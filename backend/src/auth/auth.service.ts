@@ -35,8 +35,6 @@ export class AuthService {
 
         const hashPassword = await bcrypt.hash(registerDto.password, 10);
 
-        // Create a user
-
         const user = await this.prisma.user.create({
 
             data: {
@@ -47,8 +45,6 @@ export class AuthService {
 
         })
 
-        // remove password from response
-
         const { password, ...userWithoutPassword } = user
 
         return {
@@ -58,10 +54,7 @@ export class AuthService {
 
     }
 
-    // login
-
     async login(loginDto: LoginDto) {
-  // Find user by email
   const user = await this.prisma.user.findUnique({
     where: {
       email: loginDto.email,
@@ -69,12 +62,10 @@ export class AuthService {
     include: { profile: true },
   });
 
-  // Check user exists
   if (!user) {
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  // Verify password
   const isPasswordValid = await bcrypt.compare(
     loginDto.password,
     user.password,
@@ -84,16 +75,13 @@ export class AuthService {
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  // JWT Payload
   const payload = {
     sub: user.id,
     email: user.email,
   };
 
-  // Generate Access Token
   const accessToken = await this.jwtService.signAsync(payload);
 
-  // Response
   return {
     message: 'Login successful',
     accessToken,
