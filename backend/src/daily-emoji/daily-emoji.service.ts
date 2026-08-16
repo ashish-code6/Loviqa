@@ -38,7 +38,20 @@ export class DailyEmojiService {
 
     }
 
-    // get 
+    async getUserEmojiForToday(userId: string) {
+        const date = new Date().toISOString().split('T')[0];
+
+        return this.prisma.dailyEmoji.findUnique({
+            where: {
+                userId_date: {
+                    userId,
+                    date,
+                },
+            },
+        });
+    }
+
+    // get
    async getEmojiOfTheDay() {
 
     const date = new Date().toISOString().split('T')[0];

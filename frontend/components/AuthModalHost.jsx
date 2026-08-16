@@ -68,6 +68,7 @@ export default function AuthModalHost() {
           body: JSON.stringify(forms.login),
         });
         saveSession(data);
+        sessionStorage.setItem("loviqa:show-daily-emoji", "true");
         toast.success("Welcome back to Loviqa!");
         router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
         return;
@@ -86,6 +87,7 @@ export default function AuthModalHost() {
         }),
       });
       saveSession(data);
+      sessionStorage.setItem("loviqa:show-daily-emoji", "true");
       toast.success("Account created. Let's personalise your profile.");
       router.push(data.onboardingComplete ? "/dashboard" : "/onboarding");
     } catch (error) {

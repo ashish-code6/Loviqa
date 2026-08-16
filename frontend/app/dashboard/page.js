@@ -1,315 +1,72 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  HiBell,
-  HiBookOpen,
-  HiCalendarDays,
-  HiChatBubbleLeftRight,
-  HiCog6Tooth,
-  HiArrowRightOnRectangle,
-  HiHeart,
-  HiMagnifyingGlass,
-  HiOutlineChartBar,
-  HiOutlineHome,
-  HiSparkles,
-  HiUserGroup,
-  HiUserCircle,
-} from "react-icons/hi2";
-import BrandMark from "@/components/hero/ui/BrandMark";
-import { apiRequest, clearSession, getStoredUser } from "@/lib/api";
-import { toast } from "react-toastify";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { Bell, Compass, Heart, Menu, MessageCircle, Search, Users, X } from "lucide-react";
+import AccountMenu from "@/features/account/components/AccountMenu";
+import DailyEmojiOfTheDay from "@/features/daily-emoji/components/DailyEmojiOfTheDay";
+import DailyEmojiPicker from "@/features/daily-emoji/components/DailyEmojiPicker";
+import { getStoredUser } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 const navItems = [
-  { label: "Dashboard", icon: HiOutlineHome, active: true },
-  { label: "Matches", icon: HiHeart },
-  { label: "Chats", icon: HiChatBubbleLeftRight },
-  { label: "AI Coach", icon: HiSparkles },
-  { label: "Dates", icon: HiCalendarDays },
-  { label: "Journal", icon: HiBookOpen },
-  { label: "Compatibility", icon: HiOutlineChartBar },
-  { label: "Settings", icon: HiCog6Tooth },
+  { label: "Discover", icon: Compass }, { label: "Matches", icon: Heart },
+  { label: "Communities", icon: Users }, { label: "Chat", icon: MessageCircle },
 ];
-
-const suggestions = [
-  "Text her after 7 PM",
-  "Ask about her interview",
-  "Avoid dry replies today",
-];
-
-const chats = [
-  { name: "Priya", status: "Typing...", accent: "from-rose-300 to-fuchsia-500" },
-  { name: "Rahul", status: "Yesterday", accent: "from-cyan-300 to-violet-500" },
-];
-
-const compatibility = [
-  { label: "Communication", value: 90 },
-  { label: "Trust", value: 82 },
-  { label: "Humor", value: 95 },
-];
-
 export default function DashboardPage() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [active, setActive] = useState("Discover");
+  const [user, setUser] = useState(null);
+  const [isSessionChecked, setIsSessionChecked] = useState(false);
   const router = useRouter();
-  const [user, setUser] = useState(() => getStoredUser());
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("loviqa_token");
+    function redirectIfSignedOut() {
+      const token = localStorage.getItem("loviqa_token");
+      const sessionUser = getStoredUser();
 
-    if (!token) {
-      router.replace("/?auth=login");
-      return;
+      if (!token || !sessionUser) {
+        router.replace("/?auth=login");
+        return false;
+      }
+
+      setUser(sessionUser);
+      setIsSessionChecked(true);
+      return true;
     }
 
-    apiRequest("/auth/profile")
-      .then((data) => setUser(data.user))
-      .catch(() => {
-        toast.error("Your session has expired. Please log in again.");
-        clearSession();
-        router.replace("/?auth=login");
-      })
-      .finally(() => setLoading(false));
+    redirectIfSignedOut();
+    window.addEventListener("pageshow", redirectIfSignedOut);
+    return () => window.removeEventListener("pageshow", redirectIfSignedOut);
   }, [router]);
 
-  function handleLogout() {
-    toast.success("You have been logged out.");
-    clearSession();
-    router.replace("/?auth=login");
+  if (!isSessionChecked) {
+    return <main className="min-h-screen bg-[#060711]" />;
   }
 
-  if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-[#050712] text-white">
-        <p className="inline-flex items-center gap-3 text-sm font-semibold text-white/70"><LoadingSpinner className="border-fuchsia-200/30 border-t-fuchsia-200" />Opening dashboard...</p>
-      </main>
-    );
-  }
-
-  return (
-    <main className="min-h-screen bg-[#09090B] text-white">
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_22%_12%,rgba(124,58,237,0.22),transparent_30%),radial-gradient(circle_at_78%_18%,rgba(217,70,239,0.12),transparent_28%),linear-gradient(180deg,#09090B_0%,#0b0812_100%)]" />
-
-      <div className="relative mx-auto grid min-h-screen max-w-[1500px] grid-cols-1 lg:grid-cols-[280px_1fr]">
-        <aside className="hidden border-r border-white/10 bg-white/[0.035] px-5 py-6 backdrop-blur-2xl lg:block">
-          <BrandMark />
-
-          <nav className="mt-10 grid gap-2">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className={`flex h-12 items-center gap-3 rounded-[20px] px-4 text-sm font-bold transition ${
-                  item.active
-                    ? "bg-violet-500/20 text-white shadow-[0_14px_40px_rgba(124,58,237,0.18)]"
-                    : "text-white/58 hover:bg-white/[0.055] hover:text-white"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        <section className="px-4 py-5 sm:px-6 lg:px-8">
-          <header className="flex flex-wrap items-center gap-4 rounded-[20px] border border-white/10 bg-white/[0.045] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl">
-            <div className="lg:hidden">
-              <BrandMark />
-            </div>
-
-            <div className="min-w-[220px] flex-1">
-              <label className="flex h-12 items-center gap-3 rounded-[20px] border border-white/10 bg-black/24 px-4 text-white/55">
-                <HiMagnifyingGlass className="h-5 w-5" />
-                <input
-                  className="w-full bg-transparent text-sm font-semibold text-white outline-none placeholder:text-white/40"
-                  placeholder="Search Relationship..."
-                />
-              </label>
-            </div>
-
-            <button className="flex h-12 w-12 items-center justify-center rounded-[20px] border border-white/10 bg-white/[0.055] text-white/78 transition hover:bg-violet-500/20">
-              <HiBell className="h-5 w-5" />
-            </button>
-
-            <div className="flex h-12 items-center gap-3 rounded-[20px] border border-white/10 bg-white/[0.055] px-4">
-              <HiUserCircle className="h-7 w-7 text-fuchsia-200" />
-              <span className="text-sm font-bold">{user?.name || "Ashish"}</span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="flex h-12 items-center gap-2 rounded-[20px] border border-white/10 px-4 text-sm font-bold text-white/70 transition hover:bg-white/[0.06] hover:text-white"
-            >
-              <HiArrowRightOnRectangle className="h-5 w-5" />
-              Logout
-            </button>
-          </header>
-
-          <div className="mt-7">
-            <p className="text-sm font-bold uppercase tracking-normal text-violet-200">
-              Dashboard
-            </p>
-            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
-              Good Evening, {user?.name || "Ashish"}
-            </h1>
-          </div>
-
-          <div className="mt-7 grid gap-5 xl:grid-cols-[1fr_360px]">
-            <div className="grid gap-5">
-              <div className="grid gap-5 md:grid-cols-2">
-                <GlassCard>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-white/58">
-                        Relationship Score
-                      </p>
-                      <p className="mt-4 text-6xl font-black">92%</p>
-                    </div>
-                    <div className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-rose-500/16 text-rose-200">
-                      <HiHeart className="h-7 w-7" />
-                    </div>
-                  </div>
-                  <div className="mt-7 h-3 rounded-full bg-white/8">
-                    <div className="h-full w-[92%] rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-rose-400" />
-                  </div>
-                </GlassCard>
-
-                <GlassCard>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-white/58">
-                        AI Mood Analysis
-                      </p>
-                      <p className="mt-4 text-5xl font-black">Happy</p>
-                    </div>
-                    <div className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-violet-500/18 text-violet-100">
-                      <HiSparkles className="h-7 w-7" />
-                    </div>
-                  </div>
-                  <p className="mt-7 text-sm leading-6 text-white/58">
-                    Tone is warm, responsive, and emotionally open today.
-                  </p>
-                </GlassCard>
-              </div>
-
-              <GlassCard id="profile">
-                <div className="flex items-center gap-3">
-                  <HiSparkles className="h-6 w-6 text-orange-200" />
-                  <h2 className="text-xl font-black">Daily AI Suggestions</h2>
-                </div>
-                <div className="mt-5 grid gap-3">
-                  {suggestions.map((suggestion) => (
-                    <div
-                      key={suggestion}
-                      className="rounded-[20px] border border-white/8 bg-black/20 px-4 py-3 text-sm font-semibold text-white/76"
-                    >
-                      {suggestion}
-                    </div>
-                  ))}
-                </div>
-              </GlassCard>
-
-              <GlassCard>
-                <h2 className="text-xl font-black">Compatibility Insights</h2>
-                <div className="mt-6 grid gap-5">
-                  {compatibility.map((item) => (
-                    <div key={item.label}>
-                      <div className="flex justify-between text-sm font-bold">
-                        <span className="text-white/70">{item.label}</span>
-                        <span>{item.value}%</span>
-                      </div>
-                      <div className="mt-3 h-3 rounded-full bg-white/8">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400"
-                          style={{ width: `${item.value}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </GlassCard>
-            </div>
-
-            <div className="grid gap-5">
-              <GlassCard>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-black">Recent Chats</h2>
-                  <HiChatBubbleLeftRight className="h-6 w-6 text-violet-200" />
-                </div>
-                <div className="mt-5 grid gap-3">
-                  {chats.map((chat) => (
-                    <div
-                      key={chat.name}
-                      className="flex items-center gap-3 rounded-[20px] border border-white/8 bg-black/20 p-3"
-                    >
-                      <div
-                        className={`h-12 w-12 rounded-[18px] bg-gradient-to-br ${chat.accent}`}
-                      />
-                      <div>
-                        <p className="font-bold">{chat.name}</p>
-                        <p className="mt-1 text-sm text-white/50">{chat.status}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </GlassCard>
-
-              <GlassCard>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-black">Upcoming</h2>
-                  <HiCalendarDays className="h-6 w-6 text-fuchsia-200" />
-                </div>
-                <div className="mt-5 rounded-[20px] border border-violet-300/18 bg-violet-500/10 p-4">
-                  <p className="font-black">Dinner Date</p>
-                  <p className="mt-2 text-sm font-semibold text-white/58">
-                    Saturday • 7 PM
-                  </p>
-                </div>
-              </GlassCard>
-
-              <GlassCard>
-                <h2 className="text-xl font-black">Profile</h2>
-                <div className="mt-5 grid gap-3 text-sm text-white/62">
-                  <p>
-                    <span className="font-bold text-white">Name:</span>{" "}
-                    {user?.name || "Ashish"}
-                  </p>
-                  <p>
-                    <span className="font-bold text-white">Email:</span>{" "}
-                    {user?.email || "ashish@example.com"}
-                  </p>
-                  {user?.profile?.location && (
-                    <p>
-                      <span className="font-bold text-white">Location:</span>{" "}
-                      {user.profile.location}
-                    </p>
-                  )}
-                  {user?.interests?.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {user.interests.map(({ interest }) => (
-                        <span key={interest.id} className="rounded-full bg-fuchsia-500/10 px-2.5 py-1 text-xs font-semibold text-fuchsia-100">
-                          {interest.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </GlassCard>
-            </div>
-          </div>
-        </section>
+  return <main className="relative min-h-screen overflow-hidden bg-[#060711] px-4 pb-10 pt-4 text-white sm:px-6 lg:px-10">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute -left-24 -top-32 h-[32rem] w-[32rem] rounded-full bg-violet-600/20 blur-[120px]" /><div className="absolute right-[-9rem] top-28 h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/15 blur-[110px]" /><div className="absolute bottom-[-14rem] left-[28%] h-[30rem] w-[30rem] rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(rgba(255,255,255,.09)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.09)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
+    </div>
+    <nav className="relative z-20 mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-white/[0.14] bg-white/[0.07] px-4 py-3 shadow-[0_20px_70px_rgba(0,0,0,.32),inset_0_1px_0_rgba(255,255,255,.24)] backdrop-blur-2xl sm:px-5">
+      <a href="/" className="group flex items-center gap-2.5" aria-label="Loviqa home"><span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-400 via-violet-500 to-indigo-700 shadow-[0_0_24px_rgba(192,132,252,.65)]"><Heart className="h-[18px] w-[18px] fill-white text-white" /><span className="absolute inset-px rounded-[11px] border border-white/35" /></span>
+      <span className="text-lg font-black tracking-[0.18em] text-white sm:text-xl">LOVIQA</span></a>
+      <div className="hidden items-center gap-1 rounded-2xl border border-white/[0.08] bg-black/15 p-1 lg:flex">{navItems.map(({ label, icon: Icon }) => <button key={label} onClick={() => setActive(label)} className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition ${active === label ? "bg-white/[0.14] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.2)]" : "text-white/55 hover:bg-white/[0.07] hover:text-white"}`}><Icon className="h-4 w-4" /> {label}</button>)}</div>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <button aria-label="Search" className="hidden h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-white/70 transition hover:bg-white/[0.14] hover:text-white sm:grid"><Search className="h-[18px] w-[18px]" /></button><button aria-label="Notifications" className="relative grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-white/80 transition hover:bg-white/[0.14] hover:text-white"><Bell className="h-[18px] w-[18px]" />
+      <span className="absolute right-2 top-2 h-2 w-2 rounded-full border border-[#1c112b] bg-rose-400 shadow-[0_0_10px_#fb7185]" />
+      </button><AccountMenu user={user} />
+      <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle navigation" className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] lg:hidden">{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
       </div>
-    </main>
-  );
-}
-
-function GlassCard({ children, ...props }) {
-  return (
-    <section {...props} className="rounded-[20px] border border-white/10 bg-white/[0.055] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
-      {children}
+      {mobileOpen && <div className="absolute left-0 right-0 top-[calc(100%+10px)] rounded-2xl border border-white/[0.14] bg-[#151025]/95 p-2 shadow-2xl backdrop-blur-2xl lg:hidden">{navItems.map(({ label, icon: Icon }) => <button key={label} onClick={() => { setActive(label); setMobileOpen(false); }} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${active === label ? "bg-white/10 text-white" : "text-white/65"}`}><Icon className="h-4 w-4" />{label}</button>)}</div>}
+    </nav>
+    <section className="relative z-10 mx-auto grid max-w-7xl gap-4 pt-8 sm:grid-cols-[1fr_minmax(310px,.72fr)] sm:items-stretch">
+      <div className="rounded-3xl border border-white/[0.13] bg-white/[0.06] p-6 shadow-[0_24px_65px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.17)] backdrop-blur-xl sm:p-7">
+        <p className="text-2xl font-black tracking-tight sm:text-3xl">Good Evening <span aria-hidden="true">{"\u{1F44B}"}</span>{user?.name ? `, ${user.name}` : ""}</p>
+        <p className="mt-2 text-sm text-white/60 sm:text-base">Ready to meet someone interesting?</p>
+      </div>
+      <DailyEmojiOfTheDay />
     </section>
-  );
+    <DailyEmojiPicker />
+  </main>;
 }

@@ -40,4 +40,10 @@ export class DailyEmojiController {
     async getEmojiOfTheDay() {
         return this.dailyEmojiService.getEmojiOfTheDay();
     }
+
+    @Get('mine')
+    @UseGuards(AuthGuard('jwt'))
+    async getMyEmoji(@Req() req: AuthenticatedRequest) {
+        return this.dailyEmojiService.getUserEmojiForToday(req.user.id);
+    }
 }
