@@ -27,6 +27,7 @@ model User {
 
   sentMatchScores     MatchScore[] @relation("UserMatchScores")
   receivedMatchScores MatchScore[] @relation("CandidateMatchScores")
+  dailyEmojis         DailyEmoji[]
 }
 
 
@@ -90,4 +91,15 @@ model MatchScore {
 
   @@unique([userId, candidateId])
   @@index([userId, finalScore])
+}
+
+model DailyEmoji {
+  id        String   @id @default(uuid())
+  userId    String
+  emoji     String
+  date      String
+
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+  @@unique([userId, date])
 }

@@ -9,6 +9,7 @@ import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { InterestsModule } from './interests/interests.module';
 import { MatchModule } from './match/match.module';
 import { AiModule } from './ai/ai.module';
+import { DailyEmojiModule } from './daily-emoji/daily-emoji.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AiModule } from './ai/ai.module';
     InterestsModule,
     MatchModule,
     AiModule,
+    DailyEmojiModule,
   ],
   controllers: [AppController],
 })
