@@ -10,6 +10,7 @@ import { InterestsModule } from './interests/interests.module';
 import { MatchModule } from './match/match.module';
 import { AiModule } from './ai/ai.module';
 import { DailyEmojiModule } from './daily-emoji/daily-emoji.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { DailyEmojiModule } from './daily-emoji/daily-emoji.module';
     MatchModule,
     AiModule,
     DailyEmojiModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
 })

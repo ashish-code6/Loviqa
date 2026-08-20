@@ -40,6 +40,7 @@ model UserProfile {
   gender   String?
   bio      String?
   location String?
+  profileImage String?
 
   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
