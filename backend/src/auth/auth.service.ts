@@ -48,6 +48,7 @@ export class AuthService {
         const { password, ...userWithoutPassword } = user
 
         return {
+            success: true,
             message: "User Register Successfully!!",
             user: userWithoutPassword
         }
@@ -151,6 +152,7 @@ async getProfile(userId: string) {
   const { password, ...userWithoutPassword } = user;
 
   return {
+    success: true,
     message: 'Profile fetched successfully',
     user: userWithoutPassword,
     onboardingComplete: Boolean(user.profile),

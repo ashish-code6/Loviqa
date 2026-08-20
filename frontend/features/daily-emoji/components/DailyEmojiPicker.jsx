@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
 import { apiRequest } from "@/lib/api";
@@ -10,9 +10,12 @@ export default function DailyEmojiPicker() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const hasCheckedToday = useRef(false);
 
   useEffect(() => {
     async function checkTodaySelection() {
+      if (hasCheckedToday.current) return;
+      hasCheckedToday.current = true;
       const justLoggedIn = sessionStorage.getItem("loviqa:show-daily-emoji") === "true";
 
       // A fresh login should always receive the daily check-in prompt.
@@ -22,8 +25,8 @@ export default function DailyEmojiPicker() {
       }
 
       try {
-        const existingEmoji = await apiRequest("/daily-emoji/mine");
-        setIsOpen(!existingEmoji);
+        const response = await apiRequest("/daily-emoji/mine");
+        setIsOpen(!response.data);
       } catch {
         // Never hide the picker because of a temporary API/network failure.
         setIsOpen(true);

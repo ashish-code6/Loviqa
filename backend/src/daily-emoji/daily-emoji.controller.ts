@@ -30,20 +30,23 @@ export class DailyEmojiController {
         @Req() req: AuthenticatedRequest,
         @Body() body: { emoji: string },
     ) {
-        return this.dailyEmojiService.createEmoji(
+        const emoji = await this.dailyEmojiService.createEmoji(
             req.user.id,
             body.emoji,
         );
+        return { success: true, message: 'Daily emoji saved successfully', data: emoji };
     }
 
     @Get('of-the-day')
     async getEmojiOfTheDay() {
-        return this.dailyEmojiService.getEmojiOfTheDay();
+        const emoji = await this.dailyEmojiService.getEmojiOfTheDay();
+        return { success: true, message: 'Emoji of the day fetched successfully', data: emoji };
     }
 
     @Get('mine')
     @UseGuards(AuthGuard('jwt'))
     async getMyEmoji(@Req() req: AuthenticatedRequest) {
-        return this.dailyEmojiService.getUserEmojiForToday(req.user.id);
+        const emoji = await this.dailyEmojiService.getUserEmojiForToday(req.user.id);
+        return { success: true, message: 'Your daily emoji fetched successfully', data: emoji };
     }
 }

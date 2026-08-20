@@ -1,14 +1,11 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export async function apiRequest(path, options = {}) {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("loviqa_token") : null;
-
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
   });
@@ -19,22 +16,23 @@ export async function apiRequest(path, options = {}) {
     const message = Array.isArray(data.message)
       ? data.message.join(", ")
       : data.message || "Something went wrong";
-    throw new Error(message);
+    const error = new Error(message);
+    error.status = response.status;
+    if (response.status === 401 && typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("loviqa:session-expired"));
+    }
+    throw error;
   }
 
   return data;
 }
 
-export function saveSession({ accessToken, user }) {
-  localStorage.setItem("loviqa_token", accessToken);
+export function saveSession({ user }) {
   localStorage.setItem("loviqa_user", JSON.stringify(user));
-  document.cookie = `loviqa_token=${accessToken}; path=/; max-age=604800; SameSite=Lax`;
 }
 
 export function clearSession() {
-  localStorage.removeItem("loviqa_token");
   localStorage.removeItem("loviqa_user");
-  document.cookie = "loviqa_token=; path=/; max-age=0; SameSite=Lax";
 }
 
 export function getStoredUser() {

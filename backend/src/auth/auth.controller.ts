@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import type { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 import  { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import  { LoginDto } from './dto/login.dto';
@@ -17,8 +19,16 @@ export class AuthController {
     }
 
     @Post('login')
-    login(@Body() loginDto:LoginDto){
-        return this.authService.login(loginDto)
+    async login(@Body() loginDto:LoginDto, @Res({ passthrough: true }) response: Response){
+        const { accessToken, ...payload } = await this.authService.login(loginDto);
+        response.cookie('loviqa_token', accessToken, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+        return { success: true, ...payload };
     }
 
     @Post('forgot-password')
@@ -31,7 +41,20 @@ export class AuthController {
         return this.authService.resetPassword(resetPasswordDto);
     }
 
+    @Post('logout')
+    @UseGuards(AuthGuard('jwt'))
+    logout(@Res({ passthrough: true }) response: Response) {
+        response.clearCookie('loviqa_token', {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+        });
+        return { success: true, message: 'Logout successful' };
+    }
+
     @Get('profile')
+    @UseGuards(AuthGuard('jwt'))
     profile(@Req() req: AuthenticatedRequest){
         return this.authService.getProfile(req.user.id)
     }

@@ -9,7 +9,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (request) => {
+        const bearerToken = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
+        if (bearerToken) return bearerToken;
+
+        const cookies = request?.headers?.cookie ?? '';
+        return cookies
+          .split(';')
+          .map((cookie) => cookie.trim())
+          .find((cookie) => cookie.startsWith('loviqa_token='))
+          ?.slice('loviqa_token='.length);
+      },
 
       secretOrKey: configService.getOrThrow<string>(
         'JWT_SECRET',

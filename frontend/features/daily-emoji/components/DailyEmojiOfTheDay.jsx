@@ -1,16 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Sparkles, Users } from "lucide-react";
 import { apiRequest } from "@/lib/api";
 
 export default function DailyEmojiOfTheDay() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasLoaded = useRef(false);
 
   const loadEmoji = useCallback(async () => {
     try {
-      setResult(await apiRequest("/daily-emoji/of-the-day"));
+      const response = await apiRequest("/daily-emoji/of-the-day");
+      setResult(response.data);
     } catch {
       setResult(null);
     } finally {
@@ -19,7 +21,10 @@ export default function DailyEmojiOfTheDay() {
   }, []);
 
   useEffect(() => {
-    loadEmoji();
+    if (!hasLoaded.current) {
+      hasLoaded.current = true;
+      loadEmoji();
+    }
     window.addEventListener("loviqa:daily-emoji-voted", loadEmoji);
     return () => window.removeEventListener("loviqa:daily-emoji-voted", loadEmoji);
   }, [loadEmoji]);

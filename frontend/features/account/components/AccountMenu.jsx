@@ -5,7 +5,7 @@ import Link from "next/link";
 import { LogOut, Settings, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { clearSession } from "@/lib/api";
+import { apiRequest, clearSession } from "@/lib/api";
 
 const DEFAULT_AVATAR = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=85";
 
@@ -41,13 +41,18 @@ export default function AccountMenu({
     };
   }, []);
 
-  function handleLogout() {
+  async function handleLogout() {
     setIsOpen(false);
     if (onLogout) return onLogout();
 
-    clearSession();
-    toast.success("You have been logged out.");
-    router.replace("/?auth=login");
+    try {
+      const response = await apiRequest("/auth/logout", { method: "POST" });
+      clearSession();
+      toast.success(response.message);
+      router.replace("/?auth=login");
+    } catch (error) {
+      toast.error(error.message || "Unable to log out. Please try again.");
+    }
   }
 
   return (
