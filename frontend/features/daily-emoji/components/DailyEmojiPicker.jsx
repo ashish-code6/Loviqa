@@ -16,14 +16,6 @@ export default function DailyEmojiPicker() {
     async function checkTodaySelection() {
       if (hasCheckedToday.current) return;
       hasCheckedToday.current = true;
-      const justLoggedIn = sessionStorage.getItem("loviqa:show-daily-emoji") === "true";
-
-      // A fresh login should always receive the daily check-in prompt.
-      if (justLoggedIn) {
-        setIsOpen(true);
-        return;
-      }
-
       try {
         const response = await apiRequest("/daily-emoji/mine");
         setIsOpen(!response.data);
@@ -54,6 +46,7 @@ export default function DailyEmojiPicker() {
   }
 
   function skip() {
+    sessionStorage.removeItem("loviqa:show-daily-emoji");
     setIsOpen(false);
   }
 

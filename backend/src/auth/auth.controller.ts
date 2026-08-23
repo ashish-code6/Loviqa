@@ -20,8 +20,8 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() loginDto:LoginDto, @Res({ passthrough: true }) response: Response){
-        const { accessToken, ...payload } = await this.authService.login(loginDto);
-        response.cookie('loviqa_token', accessToken, {
+        const payload = await this.authService.login(loginDto);
+        response.cookie('loviqa_token', payload.accessToken, {
             httpOnly: true,
             sameSite: 'lax',
             secure: process.env.NODE_ENV === 'production',
