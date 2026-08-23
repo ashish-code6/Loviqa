@@ -1,11 +1,34 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+export const API_ENDPOINTS = Object.freeze({
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+    logout: "/auth/logout",
+    profile: "/auth/profile",
+    forgotPassword: "/auth/forgot-password",
+    resetPassword: "/auth/reset-password",
+  },
+  users: {
+    onboarding: "/users/onboarding",
+    profile: "/users/profile",
+    profileImage: "/users/profile/image",
+  },
+  interests: "/interests",
+  dailyEmoji: {
+    root: "/daily-emoji",
+    mine: "/daily-emoji/mine",
+    ofTheDay: "/daily-emoji/of-the-day",
+  },
+});
+
 export async function apiRequest(path, options = {}) {
+  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...options.headers,
     },
   });

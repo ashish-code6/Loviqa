@@ -33,7 +33,7 @@ export class MatchService {
         const minAge = age - 5;
         const maxAge = age + 5;
 
-        const userInterests = user.interests.map(item => item.interest.name);
+        const userInterests = user.interests.map(item => item.customInterest || item.interest.name);
 
         const userAiProfile = {
             age: user.profile?.age ?? null,
@@ -65,7 +65,7 @@ export class MatchService {
         // Manual matching
         const manualMatches = matches.map(match => {
 
-            const matchInterests = match.interests.map(item => item.interest.name);
+            const matchInterests = match.interests.map(item => item.customInterest || item.interest.name);
 
             const commonInterests = userInterests.filter(
                 item => matchInterests.includes(item)

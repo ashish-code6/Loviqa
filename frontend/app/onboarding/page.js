@@ -11,7 +11,7 @@ import {
   HiSparkles,
 } from "react-icons/hi2";
 import BrandMark from "@/components/hero/ui/BrandMark";
-import { apiRequest, clearSession, getStoredUser } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest, clearSession, getStoredUser } from "@/lib/api";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -34,7 +34,7 @@ export default function OnboardingPage() {
       return;
     }
 
-    Promise.all([apiRequest("/auth/profile"), apiRequest("/interests")])
+    Promise.all([apiRequest(API_ENDPOINTS.auth.profile), apiRequest(API_ENDPOINTS.interests)])
       .then(([profileData, interestData]) => {
         if (profileData.onboardingComplete) {
           router.replace("/dashboard#profile");
@@ -80,7 +80,7 @@ export default function OnboardingPage() {
     setError("");
     setSaving(true);
     try {
-      await apiRequest("/users/onboarding", {
+      await apiRequest(API_ENDPOINTS.users.onboarding, {
         method: "POST",
         body: JSON.stringify({
           age: Number(form.age),

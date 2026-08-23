@@ -6,8 +6,9 @@ import AccountMenu from "@/features/account/components/AccountMenu";
 import DailyEmojiOfTheDay from "@/features/daily-emoji/components/DailyEmojiOfTheDay";
 import DailyEmojiPicker from "@/features/daily-emoji/components/DailyEmojiPicker";
 import { getTimeGreeting } from "@/features/dashboard/utils/time-greeting";
-import { clearSession, getStoredUser } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest, clearSession, getStoredUser, saveSession } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const navItems = [
   { label: "Discover", icon: Compass }, { label: "Matches", icon: Heart },
@@ -39,6 +40,13 @@ export default function DashboardPage() {
 
       setUser(sessionUser);
       setIsSessionChecked(true);
+      apiRequest(API_ENDPOINTS.auth.profile)
+        .then((data) => {
+          const refreshedUser = { ...sessionUser, ...data.user, ...(data.user?.profile || {}) };
+          setUser(refreshedUser);
+          saveSession({ user: refreshedUser });
+        })
+        .catch(() => {});
       return true;
     }
 
@@ -65,8 +73,8 @@ export default function DashboardPage() {
       <div className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(rgba(255,255,255,.09)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.09)_1px,transparent_1px)] [background-size:46px_46px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
     </div>
     <nav className="relative z-20 mx-auto flex max-w-7xl items-center justify-between rounded-[1.35rem] border border-white/[0.14] bg-white/[0.07] px-4 py-3 shadow-[0_20px_70px_rgba(0,0,0,.32),inset_0_1px_0_rgba(255,255,255,.24)] backdrop-blur-2xl sm:px-5">
-      <a href="/" className="group flex items-center gap-2.5" aria-label="Loviqa home"><span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-400 via-violet-500 to-indigo-700 shadow-[0_0_24px_rgba(192,132,252,.65)]"><Heart className="h-[18px] w-[18px] fill-white text-white" /><span className="absolute inset-px rounded-[11px] border border-white/35" /></span>
-      <span className="text-lg font-black tracking-[0.18em] text-white sm:text-xl">LOVIQA</span></a>
+      <Link href="/" className="group flex items-center gap-2.5" aria-label="Loviqa home"><span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-400 via-violet-500 to-indigo-700 shadow-[0_0_24px_rgba(192,132,252,.65)]"><Heart className="h-[18px] w-[18px] fill-white text-white" /><span className="absolute inset-px rounded-[11px] border border-white/35" /></span>
+      <span className="text-lg font-black tracking-[0.18em] text-white sm:text-xl">LOVIQA</span></Link>
       <div className="hidden items-center gap-1 rounded-2xl border border-white/[0.08] bg-black/15 p-1 lg:flex">{navItems.map(({ label, icon: Icon }) => <button key={label} onClick={() => setActive(label)} className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition ${active === label ? "bg-white/[0.14] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.2)]" : "text-white/55 hover:bg-white/[0.07] hover:text-white"}`}><Icon className="h-4 w-4" /> {label}</button>)}</div>
       <div className="flex items-center gap-2 sm:gap-3">
         <button aria-label="Search" className="hidden h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-white/70 transition hover:bg-white/[0.14] hover:text-white sm:grid"><Search className="h-[18px] w-[18px]" /></button><button aria-label="Notifications" className="relative grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-white/80 transition hover:bg-white/[0.14] hover:text-white"><Bell className="h-[18px] w-[18px]" />

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Sparkles, Users } from "lucide-react";
-import { apiRequest } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest } from "@/lib/api";
 
 export default function DailyEmojiOfTheDay() {
   const [result, setResult] = useState(null);
@@ -11,7 +11,7 @@ export default function DailyEmojiOfTheDay() {
 
   const loadEmoji = useCallback(async () => {
     try {
-      const response = await apiRequest("/daily-emoji/of-the-day");
+      const response = await apiRequest(API_ENDPOINTS.dailyEmoji.ofTheDay);
       setResult(response.data);
     } catch {
       setResult(null);

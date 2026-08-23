@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { HiArrowRight, HiCheckCircle, HiEnvelope } from "react-icons/hi2";
 import BrandMark from "@/components/hero/ui/BrandMark";
-import { apiRequest } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest } from "@/lib/api";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     setError("");
     try {
-      const data = await apiRequest("/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) });
+      const data = await apiRequest(API_ENDPOINTS.auth.forgotPassword, { method: "POST", body: JSON.stringify({ email }) });
       setMessage(data.message);
       toast.success("If the account exists, a reset email is on its way.");
     } catch (requestError) {

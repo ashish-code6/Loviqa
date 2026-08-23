@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
-import { apiRequest } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest } from "@/lib/api";
 
 const EMOJIS = ["\u{1F60A}", "\u{1F60D}", "\u{1F970}", "\u{2728}", "\u{1F60C}", "\u{1F525}", "\u{1F929}", "\u{1F49C}"];
 export default function DailyEmojiPicker() {
@@ -17,7 +17,7 @@ export default function DailyEmojiPicker() {
       if (hasCheckedToday.current) return;
       hasCheckedToday.current = true;
       try {
-        const response = await apiRequest("/daily-emoji/mine");
+        const response = await apiRequest(API_ENDPOINTS.dailyEmoji.mine);
         setIsOpen(!response.data);
       } catch {
         // Never hide the picker because of a temporary API/network failure.
@@ -33,7 +33,7 @@ export default function DailyEmojiPicker() {
 
     setIsSaving(true);
     try {
-      await apiRequest("/daily-emoji", { method: "POST", body: JSON.stringify({ emoji: selectedEmoji }) });
+      await apiRequest(API_ENDPOINTS.dailyEmoji.root, { method: "POST", body: JSON.stringify({ emoji: selectedEmoji }) });
       sessionStorage.removeItem("loviqa:show-daily-emoji");
       window.dispatchEvent(new Event("loviqa:daily-emoji-voted"));
       setIsOpen(false);

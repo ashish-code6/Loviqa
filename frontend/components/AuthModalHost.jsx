@@ -8,7 +8,7 @@ import {
   HiExclamationTriangle,
   HiXMark,
 } from "react-icons/hi2";
-import { apiRequest, saveSession } from "@/lib/api";
+import { API_ENDPOINTS, apiRequest, saveSession } from "@/lib/api";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -63,7 +63,7 @@ export default function AuthModalHost() {
 
     try {
       if (mode === "login") {
-        const data = await apiRequest("/auth/login", {
+        const data = await apiRequest(API_ENDPOINTS.auth.login, {
           method: "POST",
           body: JSON.stringify(forms.login),
         });
@@ -74,12 +74,12 @@ export default function AuthModalHost() {
         return;
       }
 
-      await apiRequest("/auth/register", {
+      await apiRequest(API_ENDPOINTS.auth.register, {
         method: "POST",
         body: JSON.stringify(forms.register),
       });
 
-      const data = await apiRequest("/auth/login", {
+      const data = await apiRequest(API_ENDPOINTS.auth.login, {
         method: "POST",
         body: JSON.stringify({
           email: forms.register.email,
