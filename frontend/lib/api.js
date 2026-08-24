@@ -15,6 +15,7 @@ export const API_ENDPOINTS = Object.freeze({
     profileImage: "/users/profile/image",
   },
   interests: "/interests",
+  matches: "/matches",
   dailyEmoji: {
     root: "/daily-emoji",
     mine: "/daily-emoji/mine",

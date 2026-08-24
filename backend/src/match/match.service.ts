@@ -24,15 +24,6 @@ export class MatchService {
             return [];
         }
 
-        const age = user.profile?.age;
-
-        if (age === null || age === undefined) {
-            return [];
-        }
-
-        const minAge = age - 5;
-        const maxAge = age + 5;
-
         const userInterests = user.interests.map(item => item.customInterest || item.interest.name);
 
         const userAiProfile = {
@@ -49,12 +40,6 @@ export class MatchService {
             where: {
                 id: { not: userId },
                 isActive: true,
-                profile: {
-                    age: {
-                        gte: minAge,
-                        lte: maxAge,
-                    },
-                },
             },
             include: {
                 profile: true,
@@ -157,11 +142,6 @@ export class MatchService {
                     },
                 });
 
-                // Minimum match score
-                if (finalScore < 45) {
-                    return null;
-                }
-
                 return {
                     ...match,
                     commonInterests,
@@ -172,12 +152,11 @@ export class MatchService {
             })
         );
 
-        // Remove low-score matches
-        const filteredResult = result.filter(match => match !== null);
+        const rankedMatches = result.filter(match => match !== null);
 
         // Sort by final score
-        filteredResult.sort((a, b) => b.finalScore - a.finalScore);
+        rankedMatches.sort((a, b) => b.finalScore - a.finalScore);
 
-        return filteredResult;
+        return rankedMatches.slice(0, 8).map(({ password, ...safeMatch }) => safeMatch);
     }
 }

@@ -5,6 +5,9 @@ import { Bell, Compass, Heart, Menu, MessageCircle, Search, Users, X } from "luc
 import AccountMenu from "@/features/account/components/AccountMenu";
 import DailyEmojiOfTheDay from "@/features/daily-emoji/components/DailyEmojiOfTheDay";
 import DailyEmojiPicker from "@/features/daily-emoji/components/DailyEmojiPicker";
+import DashboardMatchCarousel from "@/features/dashboard-matches/DashboardMatchCarousel";
+import ActiveClubs from "@/features/dashboard/components/ActiveClubs";
+import styles from "@/features/dashboard/DashboardLayout.module.css";
 import { getTimeGreeting } from "@/features/dashboard/utils/time-greeting";
 import { API_ENDPOINTS, apiRequest, clearSession, getStoredUser, saveSession } from "@/lib/api";
 import { useRouter } from "next/navigation";
@@ -84,13 +87,15 @@ export default function DashboardPage() {
       </div>
       {mobileOpen && <div className="absolute left-0 right-0 top-[calc(100%+10px)] rounded-2xl border border-white/[0.14] bg-[#151025]/95 p-2 shadow-2xl backdrop-blur-2xl lg:hidden">{navItems.map(({ label, icon: Icon }) => <button key={label} onClick={() => { setActive(label); setMobileOpen(false); }} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm ${active === label ? "bg-white/10 text-white" : "text-white/65"}`}><Icon className="h-4 w-4" />{label}</button>)}</div>}
     </nav>
-    <section className="relative z-10 mx-auto grid max-w-7xl gap-4 pt-8 sm:grid-cols-[1fr_minmax(310px,.72fr)] sm:items-stretch">
-      <div className="rounded-3xl border border-white/[0.13] bg-white/[0.06] p-5 shadow-[0_24px_65px_rgba(0,0,0,.2),inset_0_1px_0_rgba(255,255,255,.17)] backdrop-blur-xl sm:p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-fuchsia-200/85">Your Loviqa dashboard</p>
-        <p className="mt-2 text-xl font-bold tracking-tight text-white sm:text-2xl">{greeting || "Welcome"}{user?.name ? `, ${user.name}` : ""} <span aria-hidden="true">{"\u{1F44B}"}</span></p>
-        <p className="mt-1.5 text-sm text-white/60">Ready to meet someone interesting?</p>
+    <section className={styles.top}>
+      <div className={`${styles.crystal} ${styles.greeting}`}>
+        <p>Discover</p><h1>{greeting || "Welcome"}{user?.name ? `, ${user.name}` : ""} <span aria-hidden="true">{"\u{1F44B}"}</span></h1><small>Your curated space for meaningful connections.</small>
       </div>
-      <DailyEmojiOfTheDay />
+      <div className={`${styles.crystal} ${styles.mood}`}><DailyEmojiOfTheDay /></div>
+    </section>
+    <section className={styles.content}>
+      <DashboardMatchCarousel />
+      <ActiveClubs />
     </section>
     <DailyEmojiPicker />
   </main>;
