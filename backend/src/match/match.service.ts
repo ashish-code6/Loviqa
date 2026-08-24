@@ -4,6 +4,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class MatchService {
+    private readonly scoreCacheTtlMs = 24 * 60 * 60 * 1000;
+    private readonly inFlightRequests = new Map<string, Promise<unknown>>();
 
     constructor(
         private readonly prisma: PrismaService,
@@ -11,6 +13,22 @@ export class MatchService {
     ) { }
 
     async getMatches(userId: string) {
+        const existingRequest = this.inFlightRequests.get(userId);
+        if (existingRequest) {
+            return existingRequest;
+        }
+
+        const request = this.buildMatches(userId);
+        this.inFlightRequests.set(userId, request);
+
+        try {
+            return await request;
+        } finally {
+            this.inFlightRequests.delete(userId);
+        }
+    }
+
+    private async buildMatches(userId: string) {
 
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
@@ -71,8 +89,18 @@ export class MatchService {
         // Sort by manual interest score
         manualMatches.sort((a, b) => b.interestScore - a.interestScore);
 
-        // Only top 10 candidates go to AI
-        const topCandidates = manualMatches.slice(0, 10);
+        // Score only the strongest candidates. Cached scores prevent repeat AI calls.
+        const topCandidates = manualMatches.slice(0, 6);
+        const cachedScores = await this.prisma.matchScore.findMany({
+            where: {
+                userId,
+                candidateId: { in: topCandidates.map(({ match }) => match.id) },
+                updatedAt: { gte: new Date(Date.now() - this.scoreCacheTtlMs) },
+            },
+        });
+        const cachedScoresByCandidateId = new Map(
+            cachedScores.map((score) => [score.candidateId, score]),
+        );
 
         // AI matching
         const result = await Promise.all(
@@ -84,6 +112,22 @@ export class MatchService {
                     commonInterests,
                     interestScore,
                 } = candidate;
+
+                const cachedScore = cachedScoresByCandidateId.get(match.id);
+                if (cachedScore) {
+                    return {
+                        ...match,
+                        commonInterests,
+                        interestScore,
+                        aiResult: {
+                            score: cachedScore.aiScore,
+                            reasons: ['Compatibility score cached within the last 24 hours'],
+                            strengths: [],
+                            concerns: [],
+                        },
+                        finalScore: cachedScore.finalScore,
+                    };
+                }
 
                 const aiProfile = {
                     age: match.profile?.age ?? null,

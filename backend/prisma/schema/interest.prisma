@@ -1,0 +1,19 @@
+model Interest {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  userInterests UserInterest[]
+}
+
+model UserInterest {
+  id             String @id @default(uuid())
+  userId         String
+  interestId     String
+  customInterest String?
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, interestId])
+}

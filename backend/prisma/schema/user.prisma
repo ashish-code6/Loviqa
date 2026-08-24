@@ -1,0 +1,28 @@
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  emailVerified Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  profile             UserProfile?
+  interests           UserInterest[]
+  sentMatchScores     MatchScore[] @relation("UserMatchScores")
+  receivedMatchScores MatchScore[] @relation("CandidateMatchScores")
+  dailyEmojis         DailyEmoji[]
+}
+
+model UserProfile {
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  age          Int?
+  gender       String?
+  bio          String?
+  location     String?
+  profileImage String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

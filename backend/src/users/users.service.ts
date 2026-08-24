@@ -14,6 +14,14 @@ export class UsersService {
         private readonly cloudinaryService: CloudinaryService,
     ) { }
 
+    private async invalidateMatchScores(userId: string) {
+        await this.prisma.matchScore.deleteMany({
+            where: {
+                OR: [{ userId }, { candidateId: userId }],
+            },
+        });
+    }
+
     async createProfile(
         userId: string,
         createProfileDto: CreateProfileDto,
@@ -34,6 +42,7 @@ export class UsersService {
                 location: createProfileDto.location,
             },
         });
+        await this.invalidateMatchScores(userId);
 
         return {
             message: 'User profile created successfully',
@@ -76,6 +85,7 @@ export class UsersService {
 
             return savedProfile;
         });
+        await this.invalidateMatchScores(userId);
 
         return {
             message: 'Onboarding completed successfully',
@@ -136,6 +146,7 @@ export class UsersService {
 
             return savedProfile;
         });
+        await this.invalidateMatchScores(userId);
 
         return { message: 'Profile updated successfully', profile };
     }

@@ -1,0 +1,19 @@
+model MatchScore {
+  id String @id @default(uuid())
+
+  userId      String
+  candidateId String
+
+  interestScore Int
+  aiScore       Int
+  finalScore    Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User @relation("UserMatchScores", fields: [userId], references: [id], onDelete: Cascade)
+  candidate User @relation("CandidateMatchScores", fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, candidateId])
+  @@index([userId, finalScore])
+}
